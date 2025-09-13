@@ -13,21 +13,13 @@ import { detectAllCollisions } from "../utils/collisionUtils";
 import { Sprite } from "../types";
 
 class AnimationEngine {
-  private _collisionDetected: boolean;
-
-  constructor() {
-    this._collisionDetected = false;
-  }
-
   // Check for collisions and stop animations if detected
-  _checkCollisions = () => {
+  checkCollisions = () => {
     const state = store.getState();
     const sprites = state.sprites.sprites;
     const collisions = detectAllCollisions(sprites);
 
-    if (collisions.length > 0 && !this._collisionDetected) {
-      this._collisionDetected = true;
-
+    if (collisions.length > 0) {
       // Mark colliding sprites and swap their animations
       collisions.forEach(({ spriteA, spriteB }) => {
         store.dispatch(
@@ -75,15 +67,15 @@ class AnimationEngine {
       })
     );
 
-    // Check for collisions after movement
-    if (this._checkCollisions()) {
-      return; // Stop execution if collision detected
+    if (this.checkCollisions()) {
+      return;
     }
   };
 
+  // Turn the sprite by a certain number of degrees
   turn = (spriteId: string, degrees: number): void => {
     const sprite = this._getSpriteById(spriteId);
-    if (!sprite || sprite.animationStopped) return; // Check if animation should be stopped
+    if (!sprite || sprite.animationStopped) return;
 
     const newRotation = (sprite.rotation + degrees) % 360;
     store.dispatch(
@@ -93,15 +85,15 @@ class AnimationEngine {
       })
     );
 
-    // Check for collisions after rotation
-    if (this._checkCollisions()) {
-      return; // Stop execution if collision detected
+    if (this.checkCollisions()) {
+      return;
     }
   };
 
+  // Move the sprite to specific coordinates
   goTo = (spriteId: string, x: number, y: number): void => {
     const sprite = this._getSpriteById(spriteId);
-    if (!sprite || sprite.animationStopped) return; // Check if animation should be stopped
+    if (!sprite || sprite.animationStopped) return;
 
     store.dispatch(
       updateSpritePosition({
@@ -111,17 +103,17 @@ class AnimationEngine {
       })
     );
 
-    // Check for collisions after position change
-    if (this._checkCollisions()) {
-      return; // Stop execution if collision detected
+    if (this.checkCollisions()) {
+      return;
     }
   };
 
+  // Display a speech bubble for the sprite
   say = (spriteId: string, text: string, seconds: number): Promise<void> => {
     return new Promise<void>((resolve) => {
       const sprite = this._getSpriteById(spriteId);
       if (!sprite || sprite.animationStopped) {
-        resolve(); // Resolve immediately if animation stopped
+        resolve();
         return;
       }
 
@@ -140,11 +132,12 @@ class AnimationEngine {
     });
   };
 
+  // Display a thought bubble for the sprite
   think = (spriteId: string, text: string, seconds: number): Promise<void> => {
     return new Promise<void>((resolve) => {
       const sprite = this._getSpriteById(spriteId);
       if (!sprite || sprite.animationStopped) {
-        resolve(); // Resolve immediately if animation stopped
+        resolve();
         return;
       }
 
@@ -163,6 +156,7 @@ class AnimationEngine {
     });
   };
 
+  // Repeat a set of actions a certain number of times
   repeat = async (
     spriteId: string,
     count: number,
@@ -171,7 +165,7 @@ class AnimationEngine {
     for (let i = 0; i < count; i++) {
       const sprite = this._getSpriteById(spriteId);
       if (sprite && sprite.animationStopped) {
-        break; // Break out of loop if animation stopped
+        break;
       }
 
       await new Promise<void>((resolve) => {

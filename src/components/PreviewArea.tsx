@@ -172,11 +172,6 @@ const PreviewArea: React.FC = () => {
               {sprite.isColliding && (
                 <span className="ml-2 text-red-600 text-xs">🔴 COLLISION</span>
               )}
-              {sprite.script && (
-                <div className="text-xs mt-1 opacity-75">
-                  Script: {sprite.script}
-                </div>
-              )}
             </div>
           ))}
         </div>
