@@ -1,11 +1,5 @@
 import { Sprite } from "../types";
 
-/**
- * Checks if two sprites are colliding using bounding box detection
- * @param spriteA - First sprite with x, y, width, height properties
- * @param spriteB - Second sprite with x, y, width, height properties
- * @returns True if sprites are colliding
- */
 export function detectCollision(spriteA: Sprite, spriteB: Sprite): boolean {
   // Skip collision check if sprites are the same
   if (spriteA.id === spriteB.id) {
