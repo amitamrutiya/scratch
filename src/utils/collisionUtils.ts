@@ -1,6 +1,6 @@
 import { Sprite } from "../types";
 
-export function detectCollision(spriteA: Sprite, spriteB: Sprite): boolean {
+ function detectCollision(spriteA: Sprite, spriteB: Sprite): boolean {
   // Skip collision check if sprites are the same
   if (spriteA.id === spriteB.id) {
     return false;
@@ -49,15 +49,4 @@ export function detectAllCollisions(
   }
 
   return collisions;
-}
-
-export function swapAnimations(
-  spriteA: Sprite,
-  spriteB: Sprite
-): { spriteAUpdate: Sprite; spriteBUpdate: Sprite } {
-  const tempScript = spriteA.script;
-  return {
-    spriteAUpdate: { ...spriteA, script: spriteB.script },
-    spriteBUpdate: { ...spriteB, script: tempScript },
-  };
 }

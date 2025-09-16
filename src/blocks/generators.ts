@@ -29,9 +29,9 @@ javascriptGenerator.forBlock["repeat_animation"] = function (
 ): string {
   const times = block.getFieldValue("TIMES");
   const branch = javascriptGenerator.statementToCode(block, "DO");
-  return `repeat('${
+  return `await repeat('${
     (block.workspace as any).spriteId
-  }', ${times}, function() {\n${branch}});\n`;
+  }', ${times}, async function() {\n${branch}});\n`;
 };
 
 // Looks Code Generators

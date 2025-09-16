@@ -6,11 +6,15 @@ import {
   selectSprite,
   setPlaying,
   updateSpritePosition,
+  loadHeroExample,
 } from "../store/spritesSlice";
 import animationEngine from "../engine/AnimationEngine";
 import CatSprite from "./CatSprite";
 import SpeechBubble from "./SpeechBubble";
 import { RootState, Sprite } from "../types";
+import {
+  getHeroFeatureExample,
+} from "../utils/heroExample";
 
 const PreviewArea: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,6 +37,11 @@ const PreviewArea: React.FC = () => {
 
   const handleAddSprite = (): void => {
     dispatch(addSprite());
+  };
+
+  const handleLoadHeroExample = (): void => {
+    const heroSprites = getHeroFeatureExample();
+    dispatch(loadHeroExample(heroSprites));
   };
 
   const hasCollisions = sprites.some((sprite) => sprite.isColliding);
@@ -85,6 +94,14 @@ const PreviewArea: React.FC = () => {
             className="px-4 py-2 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600"
           >
             + Add Sprite
+          </button>
+
+          <button
+            onClick={handleLoadHeroExample}
+            className="px-4 py-2 bg-purple-500 text-white rounded-lg font-medium hover:bg-purple-600"
+            title="Load Hero Feature: Collision-based Animation Swap Example"
+          >
+            Load Hero Example
           </button>
         </div>
 

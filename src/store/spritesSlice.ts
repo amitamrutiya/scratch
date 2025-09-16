@@ -157,7 +157,23 @@ const spritesSlice = createSlice({
         const tempJsonScript = sprite1.jsonScript;
         sprite1.jsonScript = sprite2.jsonScript;
         sprite2.jsonScript = tempJsonScript;
+
+        const tempId = sprite1.id;
+        sprite1.id = sprite2.id;
+        sprite2.id = tempId;
       }
+    },
+
+    resumeAnimations: (state) => {
+      state.sprites.forEach((sprite) => {
+        sprite.animationStopped = false;
+        sprite.isColliding = false;
+      });
+    },
+
+    loadHeroExample: (state, action: PayloadAction<Sprite[]>) => {
+      state.sprites = action.payload;
+      state.selectedSpriteId = action.payload[0]?.id || "";
     },
   },
 });
@@ -176,6 +192,8 @@ export const {
   setCollisionState,
   stopAllAnimations,
   swapAnimations,
+  resumeAnimations,
+  loadHeroExample,
 } = spritesSlice.actions;
 
 export default spritesSlice.reducer;

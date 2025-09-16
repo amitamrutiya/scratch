@@ -166,7 +166,6 @@ export const looksBlocks: Record<string, BlockDefinition> = {
   },
 };
 
-// Register all blocks
 export const registerBlocks = (): void => {
   Object.entries({ ...motionBlocks, ...looksBlocks }).forEach(
     ([name, block]) => {

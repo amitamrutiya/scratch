@@ -8,6 +8,8 @@ import {
   setCollisionState,
   stopAllAnimations,
   swapAnimations,
+  resumeAnimations,
+  setPlaying,
 } from "../store/spritesSlice";
 import { detectAllCollisions } from "../utils/collisionUtils";
 import { Sprite } from "../types";
@@ -44,6 +46,10 @@ class AnimationEngine {
       console.log(
         `Collision detected! ${collisions.length} collision(s) found. Animations swapped and will.`
       );
+
+      // Automatically resume with swapped animations after a delay
+      this.resumeWithSwappedAnimations();
+
       return true;
     }
 
@@ -228,6 +234,15 @@ class AnimationEngine {
     });
 
     await Promise.all(spritePromises);
+  };
+
+  // Resume animations with swapped scripts after collision
+  resumeWithSwappedAnimations = async (): Promise<void> => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    store.dispatch(setPlaying(true));
+    store.dispatch(resumeAnimations());
+    await this.executeAllSprites();
+    store.dispatch(setPlaying(false));
   };
 
   _getSpriteById = (spriteId: string): Sprite | undefined => {

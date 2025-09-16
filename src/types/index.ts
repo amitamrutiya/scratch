@@ -6,7 +6,7 @@ export interface Sprite {
   rotation: number;
   width: number;
   height: number;
-  script: any; 
+  script: any;
   jsonScript: string | null;
   speechBubble: SpeechBubble | null;
   thoughtBubble: ThoughtBubble | null;
